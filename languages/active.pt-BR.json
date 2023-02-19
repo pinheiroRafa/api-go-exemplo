@@ -1,0 +1,9 @@
+{
+    "multiplesEmails": "O E-mail informado já existe em nossa base",
+    "wrongPassowrd": "Senha errada",
+    "suspectedDevice": "Dispositivo não autorizado",
+    "missingToken": "Necessário autenticação para usar essa funcionalidade",
+    "invalidToken": "Autenticação inválida",
+    "adminError": "Sem permissão",
+    "blockedUser": "Usuário bloqueado"
+}

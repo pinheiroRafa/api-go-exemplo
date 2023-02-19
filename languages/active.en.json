@@ -1,0 +1,9 @@
+{
+    "multiplesEmails": "The email address already exists",
+    "wrongPassowrd": "Wrong password",
+    "suspectedDevice": "The device is not associated",
+    "missingToken": "Authentication required to use this functionality",
+    "invalidToken": "Authentication invalid",
+    "adminError": "Without permission",
+    "blockedUser": "Blocked user"
+}

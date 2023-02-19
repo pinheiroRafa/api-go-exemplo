@@ -1,0 +1,299 @@
+basePath: /
+definitions:
+  error.CustomError:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  status.Status:
+    properties:
+      id:
+        type: integer
+      label:
+        type: string
+    type: object
+  statusHandler.ResponseListStatus:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/status.Status'
+        type: array
+    type: object
+  statusHandler.ResponseStatus:
+    properties:
+      status:
+        type: boolean
+    type: object
+  user_handler.RequestLoginUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  user_handler.RequestRegisterUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  user_handler.ResponseCreateUser:
+    properties:
+      data:
+        type: boolean
+    type: object
+  user_handler.ResponseLoginUser:
+    properties:
+      data:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: Rafael
+    url: https://www.linkedin.com/in/rafael-pg/
+  description: Fazendo uma API Restfull em GO
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: GO API
+  version: "1.0"
+paths:
+  /status:
+    get:
+      consumes:
+      - application/json
+      description: get all status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/statusHandler.ResponseListStatus'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: List status
+      tags:
+      - status
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo status de usuário
+      parameters:
+      - description: Status
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/status.Status'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/statusHandler.ResponseStatus'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: Criação de um novo status
+      tags:
+      - status
+  /status/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleta status de usuário
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/statusHandler.ResponseStatus'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: Deleta um status
+      tags:
+      - status
+    get:
+      consumes:
+      - application/json
+      description: Pega status por id
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/statusHandler.ResponseListStatus'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: Pegar por id
+      tags:
+      - status
+    patch:
+      consumes:
+      - application/json
+      description: Atualiza status de usuário
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: o ID passado no body é desconsiderado e pego a da URL
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/status.Status'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/statusHandler.ResponseStatus'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: Atualiza um novo status
+      tags:
+      - status
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Crated a user to system
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.RequestRegisterUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_handler.ResponseCreateUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: Crated a user to system
+      tags:
+      - Usuário
+  /user/auth:
+    patch:
+      consumes:
+      - application/json
+      description: Get access token
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.RequestLoginUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_handler.ResponseLoginUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/error.CustomError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      summary: Access token
+      tags:
+      - Usuário
+swagger: "2.0"
