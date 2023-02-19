@@ -1,5 +1,22 @@
 basePath: /
 definitions:
+  entities.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      status:
+        type: integer
+      updated_at:
+        type: string
+    type: object
   error.CustomError:
     properties:
       code:
@@ -47,6 +64,11 @@ definitions:
       data:
         type: boolean
     type: object
+  user_handler.ResponseFindUser:
+    properties:
+      data:
+        $ref: '#/definitions/entities.User'
+    type: object
   user_handler.ResponseLoginUser:
     properties:
       data:
@@ -89,6 +111,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/error.CustomError'
+      security:
+      - ApiKeyAuth: []
       summary: List status
       tags:
       - status
@@ -122,6 +146,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/error.CustomError'
+      security:
+      - ApiKeyAuth: []
       summary: Criação de um novo status
       tags:
       - status
@@ -155,6 +181,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/error.CustomError'
+      security:
+      - ApiKeyAuth: []
       summary: Deleta um status
       tags:
       - status
@@ -187,6 +215,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/error.CustomError'
+      security:
+      - ApiKeyAuth: []
       summary: Pegar por id
       tags:
       - status
@@ -225,10 +255,32 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/error.CustomError'
+      security:
+      - ApiKeyAuth: []
       summary: Atualiza um novo status
       tags:
       - status
   /user:
+    get:
+      consumes:
+      - application/json
+      description: Pegar usuário logado
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_handler.ResponseFindUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error.CustomError'
+      security:
+      - ApiKeyAuth: []
+      summary: Access token
+      tags:
+      - Usuário
     post:
       consumes:
       - application/json
@@ -296,4 +348,9 @@ paths:
       summary: Access token
       tags:
       - Usuário
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

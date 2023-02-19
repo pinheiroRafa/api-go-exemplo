@@ -25,6 +25,11 @@ const docTemplate = `{
     "paths": {
         "/status": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "get all status",
                 "consumes": [
                     "application/json"
@@ -64,6 +69,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Cria um novo status de usuário",
                 "consumes": [
                     "application/json"
@@ -116,6 +126,11 @@ const docTemplate = `{
         },
         "/status/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Pega status por id",
                 "consumes": [
                     "application/json"
@@ -164,6 +179,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Deleta status de usuário",
                 "consumes": [
                     "application/json"
@@ -212,6 +232,11 @@ const docTemplate = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Atualiza status de usuário",
                 "consumes": [
                     "application/json"
@@ -270,6 +295,38 @@ const docTemplate = `{
             }
         },
         "/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Pegar usuário logado",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Access token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.ResponseFindUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error.CustomError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Crated a user to system",
                 "consumes": [
@@ -375,6 +432,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "entities.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "error.CustomError": {
             "type": "object",
             "properties": {
@@ -449,6 +532,14 @@ const docTemplate = `{
                 }
             }
         },
+        "user_handler.ResponseFindUser": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/entities.User"
+                }
+            }
+        },
         "user_handler.ResponseLoginUser": {
             "type": "object",
             "properties": {
@@ -456,6 +547,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

@@ -1,7 +1,9 @@
 package controller
 
 import (
+	entities "main/src/entities/user"
 	userCreate "main/src/handler/user/create"
+	userFind "main/src/handler/user/find"
 	userLogin "main/src/handler/user/login"
 	utils "main/src/utils"
 	"net/http"
@@ -60,10 +62,37 @@ func findUserByEmailAndPassword(rg *gin.RouterGroup) {
 	})
 }
 
+// @Summary      Access token
+// @Description  Pegar usuário logado
+// @Tags         Usuário
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  userFind.ResponseFindUser
+// @Failure      400  {object}  error.CustomError
+// @Router       /user [get]
+// @Security ApiKeyAuth
+func findUserByToken(rg *gin.RouterGroup) {
+	rg.GET("/", func(ctx *gin.Context) {
+		u := userFind.New(language.Make(utils.GetHeaderValue(ctx, "Content-Language")))
+		var userToken, _ = ctx.Get("User")
+		var list, err = u.FindUser(userToken.(*entities.UserToken))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, err)
+		} else {
+			ctx.JSON(http.StatusOK, list)
+		}
+	})
+}
+
 func UserController(r *gin.Engine) {
 	rg := r.Group("/user")
 	{
 		createUser(rg)
 		findUserByEmailAndPassword(rg)
+	}
+	user := r.Group("/user")
+	{
+		user.Use(utils.UserAuth)
+		findUserByToken(user)
 	}
 }

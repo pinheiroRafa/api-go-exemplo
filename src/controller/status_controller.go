@@ -21,6 +21,7 @@ import (
 // @Failure      404  {object}  error.CustomError
 // @Failure      500  {object}  error.CustomError
 // @Router       /status [get]
+// @Security ApiKeyAuth
 func listAll(rg *gin.RouterGroup) {
 	rg.GET("/", func(ctx *gin.Context) {
 		var list, err = statusListAll.ListAllStatus()
@@ -47,6 +48,7 @@ func listAll(rg *gin.RouterGroup) {
 // @Failure      500  {object}  error.CustomError
 // @Router       /status [post]
 // @Param status   body s.Status true "Status"
+// @Security ApiKeyAuth
 func create(rg *gin.RouterGroup) {
 	rg.POST("/", func(ctx *gin.Context) {
 		var requestBody s.Status
@@ -73,6 +75,7 @@ func create(rg *gin.RouterGroup) {
 // @Router       /status/{id} [patch]
 // @Param id   path string true "Id"
 // @Param status   body s.Status true "o ID passado no body é desconsiderado e pego a da URL"
+// @Security ApiKeyAuth
 func update(rg *gin.RouterGroup) {
 	rg.PATCH("/:id", func(ctx *gin.Context) {
 		var requestBody s.Status
@@ -98,6 +101,7 @@ func update(rg *gin.RouterGroup) {
 // @Failure      500  {object}  error.CustomError
 // @Router       /status/{id} [delete]
 // @Param id   path string true "Id"
+// @Security ApiKeyAuth
 func delete(rg *gin.RouterGroup) {
 	rg.DELETE("/:id", func(ctx *gin.Context) {
 		var list, err = status.DeleteStatus(ctx.Param("id"))
@@ -121,6 +125,7 @@ func delete(rg *gin.RouterGroup) {
 // @Failure      500  {object}  error.CustomError
 // @Router       /status/{id} [get]
 // @Param id   path string true "Id"
+// @Security ApiKeyAuth
 func byId(rg *gin.RouterGroup) {
 	rg.GET("/:id", func(ctx *gin.Context) {
 		var list, err = statusListAll.ListStatusById(ctx.Param("id"))
